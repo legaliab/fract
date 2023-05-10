@@ -6,19 +6,19 @@
 #    By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/20 18:03:46 by alabdull          #+#    #+#              #
-#    Updated: 2023/05/08 04:54:02 by alabdull         ###   ########.fr        #
+#    Updated: 2023/05/11 00:00:08 by alabdull         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
 
-SRC =	julia.c utils.c melbrot.c fractol.c\
+SRC =	julia.c utils.c utils1.c melbrot.c fractol.c\
 
 OBJ = $(SRC:.c=.o)
 
-CC = gcc -Wall -Werror -Wextra
+CC = gcc
 
-CFLAGS =  -g3 -fsanitize=address
+CFLAGS =  -Wall -Werror -Wextra -g3 -fsanitize=address
 
 MLX = libmlx.dylib
 

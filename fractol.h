@@ -6,7 +6,7 @@
 /*   By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 01:36:23 by alabdull          #+#    #+#             */
-/*   Updated: 2023/05/09 22:35:33 by alabdull         ###   ########.fr       */
+/*   Updated: 2023/05/10 18:20:44 by alabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_mlx_data_j
 	void				*mlx;
 	void				*win;
 	t_fractal_params	*params;
+	double				scale;
 }						t_mlx_data_j;
 
 typedef struct s_vars
@@ -72,15 +73,19 @@ typedef struct s_julia_vars
 	double				imag;
 }						t_julia_vars;
 
-# define WIDTH 800
-# define HEIGHT 800
-# define MAX_ITER 1000
+# define WIDTH 1000
+# define HEIGHT 900
+# define MAX_ITER 100
 
 int						color_map(int value);
 int						create_trgb(unsigned char t, unsigned char r,
 							unsigned char g, unsigned char b);
 int						key_press_m(int keycode, t_mlx_data_m *mlx_data);
 int						key_press_j(int keycode, t_mlx_data_j *mlx_data);
+int						destroy_notify_m(t_mlx_data_m *mlx_data);
+int						close_window_m(t_mlx_data_m *mlx_data);
+int						destroy_notify_j(t_mlx_data_m *mlx_data);
+int						close_window_j(t_mlx_data_m *mlx_data);
 void					mendel(void);
 void					julia(void);
 

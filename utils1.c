@@ -1,31 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.c                                          :+:      :+:    :+:   */
+/*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/23 09:16:58 by alabdull          #+#    #+#             */
-/*   Updated: 2023/05/11 00:05:55 by alabdull         ###   ########.fr       */
+/*   Created: 2023/05/10 16:46:52 by alabdull          #+#    #+#             */
+/*   Updated: 2023/05/10 16:49:36 by alabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	main(int ac, char **av)
+int	destroy_notify_m(t_mlx_data_m *mlx_data)
 {
-	if (ac == 2)
-	{
-		if (ft_atoi(av[1]) == 0)
-			mendel();
-		else if (ft_atoi(av[1]) == 1)
-			julia();
-	}
-	else
-	{
-		ft_printf("    \n\n\nmendelbrot set: ./fractol 0\n");
-		ft_printf("     \njulia set: ./fractol 1\n\n\n\n");
-		exit(0);
-	}
+	close_window_m(mlx_data);
+	return (0);
+}
+
+int	close_window_m(t_mlx_data_m *mlx_data)
+{
+	mlx_destroy_window(mlx_data->mlx, mlx_data->win);
+	exit(0);
+	return (0);
+}
+
+int	destroy_notify_j(t_mlx_data_m *mlx_data)
+{
+	close_window_j(mlx_data);
+	return (0);
+}
+
+int	close_window_j(t_mlx_data_m *mlx_data)
+{
+	mlx_destroy_window(mlx_data->mlx, mlx_data->win);
+	exit(0);
 	return (0);
 }

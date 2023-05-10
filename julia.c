@@ -6,7 +6,7 @@
 /*   By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 04:07:15 by alabdull          #+#    #+#             */
-/*   Updated: 2023/05/09 21:45:06 by alabdull         ###   ########.fr       */
+/*   Updated: 2023/05/10 23:08:56 by alabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ void	render_fractal(t_mlx_data_j *mlx_data, t_fractal_params *params,
 		v.x = -1;
 		while (++v.x < WIDTH)
 		{
-			v.real = params->x_min + (v.x * (params->x_max - params->x_min))
-				/ WIDTH;
-			v.imag = params->y_min + (v.y * (params->y_max - params->y_min))
-				/ HEIGHT;
+			v.real = (params->x_min + (v.x * (params->x_max - params->x_min))
+					/ WIDTH) * mlx_data->scale;
+			v.imag = (params->y_min + (v.y * (params->y_max - params->y_min))
+					/ HEIGHT) * mlx_data->scale;
 			mlx_pixel_put(mlx_data->mlx, mlx_data->win, v.x, v.y,
 				color_map(julia_draw(&v, params->real, params->imag,
 						max_iter)));
@@ -76,13 +76,14 @@ int	mouse_scroll_j(int button, int x, int y, t_mlx_data_j *mlx_data)
 				- mlx_data->params->y_min)) / HEIGHT;
 	if (button == 4)
 	{
-		zoom_factor = 1.1;
+		mlx_data->scale *= 1.3;
 	}
 	else if (button == 5)
 	{
-		zoom_factor = 1 / 1.1;
+		mlx_data->scale /= 1.3;
 	}
 	update_fractal_params_j(mlx_data->params, zoom_factor, center_x, center_y);
+	mlx_clear_window(mlx_data->mlx, mlx_data->win);
 	render_fractal(mlx_data, mlx_data->params, MAX_ITER);
 	return (0);
 }
@@ -100,9 +101,11 @@ void	julia(void)
 	params.y_max = 1;
 	params.real = -0.8;
 	params.imag = 0.156;
+	mlx_data.scale = 1.0;
 	mlx_data.params = &params;
 	render_fractal(&mlx_data, &params, MAX_ITER);
 	mlx_mouse_hook(mlx_data.win, mouse_scroll_j, &mlx_data);
 	mlx_key_hook(mlx_data.win, key_press_j, &mlx_data);
+	mlx_hook(mlx_data.win, 17, 0, destroy_notify_m, &mlx_data);
 	mlx_loop(mlx_data.mlx);
 }
