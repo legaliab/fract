@@ -6,7 +6,7 @@
 /*   By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:00:44 by alabdull          #+#    #+#             */
-/*   Updated: 2023/05/10 16:48:36 by alabdull         ###   ########.fr       */
+/*   Updated: 2023/05/14 03:08:42 by alabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	draw_mandelbrot(t_mlx_data_m *mlx_data, t_mandelbrot_params *params,
 	double	imag;
 	double	temp;
 
-	real = params->x_min + (v->x * (params->x_max - params->x_min)) / WIDTH;
-	imag = params->y_min + (v->y * (params->y_max - params->y_min)) / HEIGHT;
+	real = (params->x_min + (v->x * (params->x_max - params->x_min)) / WIDTH)
+		* mlx_data->scale;
+	imag = (params->y_min + (v->y * (params->y_max - params->y_min)) / HEIGHT)
+		* mlx_data->scale;
 	v->r = 0;
 	v->i = 0;
 	v->iter = -1;
@@ -76,13 +78,14 @@ int	mouse_scroll_m(int button, int x, int y, t_mlx_data_m *mlx_data)
 				- mlx_data->params->y_min)) / HEIGHT;
 	if (button == 4)
 	{
-		zoom_factor = 1.1;
+		mlx_data->scale *= 1.3;
 	}
 	else if (button == 5)
 	{
-		zoom_factor = 1 / 1.1;
+		mlx_data->scale /= 1.1;
 	}
 	update_fractal_params_m(mlx_data->params, zoom_factor, center_x, center_y);
+	mlx_clear_window(mlx_data->mlx, mlx_data->win);
 	render_mandelbrot(mlx_data, mlx_data->params, MAX_ITER);
 	return (0);
 }
@@ -100,6 +103,7 @@ void	mendel(void)
 	params.y_min = -1;
 	params.y_max = 1;
 	mlx_data.params = &params;
+	mlx_data.scale = 1.0;
 	render_mandelbrot(&mlx_data, &params, MAX_ITER);
 	mlx_mouse_hook(mlx_data.win, mouse_scroll_m, &mlx_data);
 	mlx_key_hook(mlx_data.win, key_press_m, &mlx_data);

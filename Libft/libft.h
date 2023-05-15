@@ -6,7 +6,7 @@
 /*   By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 22:42:55 by alabdull          #+#    #+#             */
-/*   Updated: 2023/05/04 17:07:26 by alabdull         ###   ########.fr       */
+/*   Updated: 2023/05/12 00:46:46 by alabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <limits.h>
+# include <stdbool.h>
 # include <math.h>
 # include "./ft_printf/ft_printf.h"
 # include "./get_next_line/get_next_line_bonus.h"

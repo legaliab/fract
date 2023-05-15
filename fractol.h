@@ -6,7 +6,7 @@
 /*   By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 01:36:23 by alabdull          #+#    #+#             */
-/*   Updated: 2023/05/10 18:20:44 by alabdull         ###   ########.fr       */
+/*   Updated: 2023/05/14 19:18:33 by alabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_mlx_data_m
 	void				*mlx;
 	void				*win;
 	t_mandelbrot_params	*params;
+	double				scale;
 }						t_mlx_data_m;
 
 typedef struct s_mlx_data_j
