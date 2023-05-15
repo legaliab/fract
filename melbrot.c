@@ -6,7 +6,7 @@
 /*   By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:00:44 by alabdull          #+#    #+#             */
-/*   Updated: 2023/05/14 03:08:42 by alabdull         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:34:07 by alabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	draw_mandelbrot(t_mlx_data_m *mlx_data, t_mandelbrot_params *params,
 	double	real;
 	double	imag;
 	double	temp;
+	int		pos;
 
 	real = (params->x_min + (v->x * (params->x_max - params->x_min)) / WIDTH)
 		* mlx_data->scale;
@@ -32,14 +33,21 @@ void	draw_mandelbrot(t_mlx_data_m *mlx_data, t_mandelbrot_params *params,
 		v->i = 2 * v->r * v->i + imag;
 		v->r = temp;
 	}
-	mlx_pixel_put(mlx_data->mlx, mlx_data->win, v->x, v->y, color_map(v->iter));
+	pos = v->x + v->y * WIDTH;
+	mlx_data->image_data[pos] = color_map(v->iter);
 }
 
 void	render_mandelbrot(t_mlx_data_m *mlx_data, t_mandelbrot_params *params,
 		int max_iter)
 {
 	t_vars	v;
+	void	*img_ptr;
+	int		*img_data;
 
+	img_ptr = mlx_new_image(mlx_data->mlx, WIDTH, HEIGHT);
+	img_data = (int *)mlx_get_data_addr(img_ptr, &mlx_data->bpp,
+			&mlx_data->size_line, &mlx_data->endian);
+	mlx_data->image_data = img_data;
 	v.y = -1;
 	while (++v.y < HEIGHT)
 	{
@@ -49,6 +57,8 @@ void	render_mandelbrot(t_mlx_data_m *mlx_data, t_mandelbrot_params *params,
 			draw_mandelbrot(mlx_data, params, &v, max_iter);
 		}
 	}
+	mlx_put_image_to_window(mlx_data->mlx, mlx_data->win, img_ptr, 0, 0);
+	mlx_destroy_image(mlx_data->mlx, img_ptr);
 }
 
 void	update_fractal_params_m(t_mandelbrot_params *params, double zoom_factor,
@@ -82,7 +92,7 @@ int	mouse_scroll_m(int button, int x, int y, t_mlx_data_m *mlx_data)
 	}
 	else if (button == 5)
 	{
-		mlx_data->scale /= 1.1;
+		mlx_data->scale /= 1.3;
 	}
 	update_fractal_params_m(mlx_data->params, zoom_factor, center_x, center_y);
 	mlx_clear_window(mlx_data->mlx, mlx_data->win);
