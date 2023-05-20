@@ -6,13 +6,13 @@
 #    By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/20 18:03:46 by alabdull          #+#    #+#              #
-#    Updated: 2023/05/14 19:18:43 by alabdull         ###   ########.fr        #
+#    Updated: 2023/05/17 01:29:21 by alabdull         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
 
-SRC =	julia.c utils.c utils1.c melbrot.c fractol.c\
+SRC =	julia.c utils.c utils1.c melbrot.c fractol.c atod.c burning_ship.c\
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 04:07:15 by alabdull          #+#    #+#             */
-/*   Updated: 2023/05/10 23:08:56 by alabdull         ###   ########.fr       */
+/*   Updated: 2023/05/20 18:08:09 by alabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,13 @@ int	julia_draw(t_julia_vars *v, double c_real, double c_imag, int max_iter)
 }
 
 void	render_fractal(t_mlx_data_j *mlx_data, t_fractal_params *params,
-		int max_iter)
+	int max_iter)
 {
 	t_julia_vars	v;
 
+	mlx_data->image = mlx_new_image(mlx_data->mlx, WIDTH, HEIGHT);
+	mlx_data->image_data = (int *)mlx_get_data_addr(mlx_data->image,
+			&mlx_data->bpp, &mlx_data->size_line, &mlx_data->endian);
 	v.y = -1;
 	while (++v.y < HEIGHT)
 	{
@@ -42,11 +45,13 @@ void	render_fractal(t_mlx_data_j *mlx_data, t_fractal_params *params,
 					/ WIDTH) * mlx_data->scale;
 			v.imag = (params->y_min + (v.y * (params->y_max - params->y_min))
 					/ HEIGHT) * mlx_data->scale;
-			mlx_pixel_put(mlx_data->mlx, mlx_data->win, v.x, v.y,
-				color_map(julia_draw(&v, params->real, params->imag,
-						max_iter)));
+			mlx_data->image_data[v.x + v.y * WIDTH] = color_map(julia_draw(&v,
+						params->real, params->imag, max_iter));
 		}
 	}
+	mlx_put_image_to_window(mlx_data->mlx, mlx_data->win, mlx_data->image, 0,
+		0);
+	mlx_destroy_image(mlx_data->mlx, mlx_data->image);
 }
 
 void	update_fractal_params_j(t_fractal_params *params, double zoom_factor,
@@ -88,24 +93,19 @@ int	mouse_scroll_j(int button, int x, int y, t_mlx_data_j *mlx_data)
 	return (0);
 }
 
-void	julia(void)
+void	julia(t_mlx_data_j *mlx_data, t_fractal_params *params)
 {
-	t_mlx_data_j		mlx_data;
-	t_fractal_params	params;
-
-	mlx_data.mlx = mlx_init();
-	mlx_data.win = mlx_new_window(mlx_data.mlx, WIDTH, HEIGHT, "Julia Set");
-	params.x_min = -2;
-	params.x_max = 1;
-	params.y_min = -1;
-	params.y_max = 1;
-	params.real = -0.8;
-	params.imag = 0.156;
-	mlx_data.scale = 1.0;
-	mlx_data.params = &params;
-	render_fractal(&mlx_data, &params, MAX_ITER);
-	mlx_mouse_hook(mlx_data.win, mouse_scroll_j, &mlx_data);
-	mlx_key_hook(mlx_data.win, key_press_j, &mlx_data);
-	mlx_hook(mlx_data.win, 17, 0, destroy_notify_m, &mlx_data);
-	mlx_loop(mlx_data.mlx);
+	mlx_data->mlx = mlx_init();
+	mlx_data->win = mlx_new_window(mlx_data->mlx, WIDTH, HEIGHT, "Julia Set");
+	params->x_min = -2;
+	params->x_max = 2;
+	params->y_min = -2;
+	params->y_max = 2;
+	mlx_data->scale = 1.0;
+	mlx_data->params = params;
+	render_fractal(mlx_data, params, MAX_ITER);
+	mlx_mouse_hook(mlx_data->win, mouse_scroll_j, mlx_data);
+	mlx_key_hook(mlx_data->win, key_press_j, mlx_data);
+	mlx_hook(mlx_data->win, 17, 0, destroy_notify_m, mlx_data);
+	mlx_loop(mlx_data->mlx);
 }

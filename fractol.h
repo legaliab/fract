@@ -6,7 +6,7 @@
 /*   By: alabdull <@student.42abudhabi.ae>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 01:36:23 by alabdull          #+#    #+#             */
-/*   Updated: 2023/05/15 18:32:16 by alabdull         ###   ########.fr       */
+/*   Updated: 2023/05/20 18:07:04 by alabdull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ typedef struct s_mlx_data_j
 	void				*win;
 	t_fractal_params	*params;
 	double				scale;
+	int					*image_data;
+	void				*image;
+	int					endian;
+	int					bpp;
+	int					size_line;
+	int					base_clr;
+	int					rand_clr;
 }						t_mlx_data_j;
 
 typedef struct s_vars
@@ -78,9 +85,9 @@ typedef struct s_julia_vars
 	double				imag;
 }						t_julia_vars;
 
-# define WIDTH 1080
-# define HEIGHT 720
-# define MAX_ITER 100
+# define WIDTH 1000
+# define HEIGHT 900
+# define MAX_ITER 10000
 
 int						color_map(int value);
 int						create_trgb(unsigned char t, unsigned char r,
@@ -91,7 +98,10 @@ int						destroy_notify_m(t_mlx_data_m *mlx_data);
 int						close_window_m(t_mlx_data_m *mlx_data);
 int						destroy_notify_j(t_mlx_data_m *mlx_data);
 int						close_window_j(t_mlx_data_m *mlx_data);
+double					ft_atod(const char *str);
 void					mendel(void);
-void					julia(void);
-
+void					burning_ship(void);
+void					julia(t_mlx_data_j *mlx_data, t_fractal_params *params);
+void					render_fractal(t_mlx_data_j *mlx_data,
+							t_fractal_params *params, int max_iter);
 #endif
